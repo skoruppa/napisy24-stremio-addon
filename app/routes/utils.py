@@ -46,7 +46,7 @@ def return_srt_file(data, filename) -> Response:
 
     # Write a static file
     with open(temp_file_path, "w") as temp_file:
-        temp_file.write("1\n00:00:01,000 --> 00:00:02,000\nHello, world!")
+        temp_file.write(data)
 
     # Serve the file
     return send_file(
