@@ -43,7 +43,8 @@ def return_srt_file(data, filename) -> Response:
     def generate():
         yield data
 
-    response = Response(generate(), mimetype="text/plain")
-    response.headers["Content-Disposition"] = f"attachment; filename={filename}.srt"
+    resp = Response(generate(), mimetype="text/plain")
+    resp.headers['Access-Control-Allow-Origin'] = "*"
+    resp.headers['Access-Control-Allow-Headers'] = '*'
 
-    return response
+    return resp
