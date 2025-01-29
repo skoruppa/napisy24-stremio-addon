@@ -40,11 +40,10 @@ def respond_with(data) -> Response:
 
 
 def return_srt_file(data, filename) -> Response:
-    def generate():
-        yield data
-
-    resp = Response(generate())
+    resp = Response(data, mimetype="application/octet-stream")
     resp.headers['Access-Control-Allow-Origin'] = "*"
     resp.headers['Access-Control-Allow-Headers'] = '*'
+    resp.headers["Content-Disposition"] = f"attachment; filename={filename}.srt"
+    resp.headers["Content-Length"] = str(len(data.encode('utf-8')))
 
     return resp
