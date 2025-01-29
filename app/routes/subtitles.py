@@ -4,7 +4,7 @@ from flask import Blueprint, url_for, Response, make_response
 from urllib.parse import parse_qs, unquote
 
 from app.routes import napisy24_client
-from app.routes.utils import respond_with
+from app.routes.utils import respond_with, return_srt_file
 from app.lib.subtitles import extract_and_convert
 
 subtitles_bp = Blueprint('subtitles', __name__)
@@ -64,7 +64,7 @@ def addon_stream(content_type: str, content_id: str, params: str):
     return respond_with({'subtitles': []})
 
 
-@subtitles_bp.route('/download/hash/<params>')
+@subtitles_bp.route('/download/hash/<params>.srt')
 def download_subtitles_from_hash(params: str):
     """
     Download subtitles based on encoded parameters.
@@ -78,17 +78,13 @@ def download_subtitles_from_hash(params: str):
         )
         if zipfile:
             srt_file = extract_and_convert(zipfile, fps)
-            response = Response(srt_file, content_type="text/plain; charset=utf-8")
-            response.headers["Content-Disposition"] = "attachment; filename=subtitles.srt"
-            response.headers["Content-Length"] = str(len(srt_file.encode("utf-8")))
-
-            return response
+            return return_srt_file(srt_file, params)
 
     except Exception as e:
         return respond_with({"error": str(e)})
 
 
-@subtitles_bp.route('/download/id/<params>')
+@subtitles_bp.route('/download/id/<params>.srt')
 def download_subtitles_from_id(params: str):
     """
     Download subtitles based on encoded parameters.
@@ -98,11 +94,7 @@ def download_subtitles_from_id(params: str):
         zipfile = napisy24_client.download_subtitle_id(subtitle_id=decoded_params["id"])
         if zipfile:
             srt_file = extract_and_convert(zipfile, decoded_params["fps"])
-            response = Response(srt_file, content_type="text/plain; charset=utf-8")
-            response.headers["Content-Disposition"] = "attachment; filename=subtitles.srt"
-            response.headers["Content-Length"] = str(len(srt_file.encode("utf-8")))
+            return return_srt_file(srt_file, params)
 
-            return response
-            
     except Exception as e:
         return respond_with({"error": str(e)})
