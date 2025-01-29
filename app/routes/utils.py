@@ -42,16 +42,13 @@ def respond_with(data) -> Response:
 
 
 def return_srt_file(data, filename) -> Response:
-    temp_file_path = "/tmp/test.srt"
+    buffer = BytesIO()
+    buffer.write(data.encode("utf-8"))
+    buffer.seek(0)
 
-    # Write a static file
-    with open(temp_file_path, "w") as temp_file:
-        temp_file.write(data)
+    resp = make_response(buffer.read())
+    resp.headers["Content-Disposition"] = f"attachment; filename={filename}.srt"
+    resp.headers["Content-Type"] = "application/x-subrip"
+    resp.headers["Content-Length"] = str(len(data.encode("utf-8")))
 
-    # Serve the file
-    return send_file(
-        temp_file_path,
-        as_attachment=False,
-        download_name="test.srt",
-        mimetype="application/x-subrip"
-    )
+    return resp
