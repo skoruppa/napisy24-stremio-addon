@@ -78,9 +78,9 @@ def download_subtitles_from_hash(params: str):
         )
         if zipfile:
             srt_file = extract_and_convert(zipfile, fps)
-            response = make_response(srt_file)
-            response.headers["Content-Type"] = "application/x-subrip"
-            response.headers["Content-Disposition"] = f"attachment; filename={params}.srt"
+            response = Response(srt_file, content_type="text/plain; charset=utf-8")
+            response.headers["Content-Disposition"] = "attachment; filename=subtitles.srt"
+            response.headers["Content-Length"] = str(len(srt_file.encode("utf-8")))
 
             return response
 
@@ -98,9 +98,9 @@ def download_subtitles_from_id(params: str):
         zipfile = napisy24_client.download_subtitle_id(subtitle_id=decoded_params["id"])
         if zipfile:
             srt_file = extract_and_convert(zipfile, decoded_params["fps"])
-            response = make_response(srt_file)
-            response.headers["Content-Type"] = "application/x-subrip"
-            response.headers["Content-Disposition"] = f"attachment; filename={decoded_params["release"]}.srt"
+            response = Response(srt_file, content_type="text/plain; charset=utf-8")
+            response.headers["Content-Disposition"] = "attachment; filename=subtitles.srt"
+            response.headers["Content-Length"] = str(len(srt_file.encode("utf-8")))
 
             return response
             
