@@ -1,5 +1,7 @@
 import logging
-from flask import jsonify, flash, make_response, url_for, redirect, Response
+from io import BytesIO
+
+from flask import jsonify, flash, make_response, url_for, redirect, Response, send_file
 from flask_caching import Cache
 cache = Cache()
 
@@ -40,5 +42,15 @@ def respond_with(data) -> Response:
 
 
 def return_srt_file(data, filename) -> Response:
-    str_file = str.encode(data)
-    return str_file
+    # Use BytesIO instead of StringIO here.
+    buffer = BytesIO()
+    buffer.write(str.encode(data))
+    # Or you can encode it to bytes.
+    # buffer.write('Just some letters.'.encode('utf-8'))
+    buffer.seek(0)
+    return send_file(
+        buffer,
+        as_attachment=True,
+        download_name=f'{filename}.srt',
+        mimetype='text/csv'
+    )
