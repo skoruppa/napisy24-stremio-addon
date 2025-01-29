@@ -52,5 +52,5 @@ def return_srt_file(data, filename) -> Response:
         buffer,
         as_attachment=False,
         download_name=f'{filename}.srt',
-        mimetype='text/html'
+        mimetype='application/x-subrip'
     )
