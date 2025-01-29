@@ -13,7 +13,7 @@ class Config:
     CACHE_TYPE = 'SimpleCache'
     CACHE_DEFAULT_TIMEOUT = 600
 
-    DEBUG = os.getenv('FLASK_DEBUG', True)
+    DEBUG = os.getenv('FLASK_DEBUG', False)
 
     # Env dependent configs
     if DEBUG in ["1", True, "True"]:  # Local development
