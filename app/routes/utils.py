@@ -42,15 +42,16 @@ def respond_with(data) -> Response:
 
 
 def return_srt_file(data, filename) -> Response:
-    # Use BytesIO instead of StringIO here.
-    buffer = BytesIO()
-    buffer.write(str.encode(data))
-    # Or you can encode it to bytes.
-    # buffer.write('Just some letters.'.encode('utf-8'))
-    buffer.seek(0)
+    temp_file_path = "/tmp/test.srt"
+
+    # Write a static file
+    with open(temp_file_path, "w") as temp_file:
+        temp_file.write("1\n00:00:01,000 --> 00:00:02,000\nHello, world!")
+
+    # Serve the file
     return send_file(
-        buffer,
+        temp_file_path,
         as_attachment=False,
-        download_name=f'{filename}.srt',
-        mimetype='application/x-subrip'
+        download_name="test.srt",
+        mimetype="application/x-subrip"
     )
