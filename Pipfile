@@ -1,0 +1,18 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+requests = "~=2.32.3"
+pysubs2 = "~=1.8.0"
+flask = "~=3.1.0"
+flask-caching = "~=2.3.0"
+flask-compress = "~=1.17"
+waitress = "~=3.0.2"
+python-dotenv = "~=1.0.1"
+
+[dev-packages]
+
+[requires]
+python_version = "3.12"
