@@ -1,6 +1,6 @@
 import base64
 import json
-from flask import Blueprint, url_for, Response
+from flask import Blueprint, url_for, Response, make_response
 from urllib.parse import parse_qs, unquote
 
 from app.routes import napisy24_client
@@ -78,14 +78,11 @@ def download_subtitles_from_hash(params: str):
         )
         if zipfile:
             srt_file = extract_and_convert(zipfile, fps)
-            return Response(
-                srt_file,
-                mimetype="text/plain",
-                headers={
-                    "Content-Disposition": f'attachment; filename="{params}.srt"',
-                    "Content-Type": "application/x-subrip"
-                }
-            )
+            response = make_response(srt_file)
+            response.headers["Content-Type"] = "application/x-subrip"
+            response.headers["Content-Disposition"] = f"attachment; filename={params}.srt"
+
+            return response
 
     except Exception as e:
         return respond_with({"error": str(e)})
@@ -101,14 +98,11 @@ def download_subtitles_from_id(params: str):
         zipfile = napisy24_client.download_subtitle_id(subtitle_id=decoded_params["id"])
         if zipfile:
             srt_file = extract_and_convert(zipfile, decoded_params["fps"])
-            return Response(
-                srt_file,
-                mimetype="text/plain",
-                headers={
-                    "Content-Disposition": f'attachment; filename="{decoded_params["release"]}.srt"',
-                    "Content-Type": "application/x-subrip"
-                }
-            )
+            response = make_response(srt_file)
+            response.headers["Content-Type"] = "application/x-subrip"
+            response.headers["Content-Disposition"] = f"attachment; filename={decoded_params["release"]}.srt"
 
+            return response
+            
     except Exception as e:
         return respond_with({"error": str(e)})
