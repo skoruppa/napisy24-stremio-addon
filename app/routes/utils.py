@@ -40,5 +40,5 @@ def respond_with(data) -> Response:
 
 
 def return_srt_file(data, filename) -> Response:
-    
-    return data
+    str_file = str.encode(data)
+    return str_file
