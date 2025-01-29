@@ -50,7 +50,7 @@ def return_srt_file(data, filename) -> Response:
     buffer.seek(0)
     return send_file(
         buffer,
-        as_attachment=True,
+        as_attachment=False,
         download_name=f'{filename}.srt',
-        mimetype='text/csv'
+        mimetype='application/x-subrip'
     )
