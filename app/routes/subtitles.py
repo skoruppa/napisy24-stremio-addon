@@ -53,11 +53,12 @@ def addon_stream(content_type: str, content_id: str, params: str):
         for subtitle in content_id_based_subtitles:
             encoded_params = base64.urlsafe_b64encode(json.dumps(subtitle).encode()).decode()
             download_url = url_for('subtitles.download_subtitles_from_id', params=encoded_params, _external=True)
+            name = subtitle['release']
             subtitles['subtitles'].append({
                     'id': str(subtitle['id']),
                     'url': download_url,
                     'SubEncoding': 'UTF-8',
-                    'lang': f'Napisy24: {subtitle['release']}'
+                    'lang': f'Napisy24: {name}'
                 })
         return respond_with(subtitles)
 
