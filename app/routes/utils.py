@@ -42,11 +42,14 @@ def respond_with(data) -> Response:
 
 
 def return_srt_file(data, filename) -> Response:
+    if not data:
+        return make_response("No data to return", 400)
+
     buffer = BytesIO()
     buffer.write(data.encode("utf-8"))
     buffer.seek(0)
 
-    resp = make_response(buffer.read())
+    resp = make_response(buffer.getvalue())
     resp.headers["Content-Disposition"] = f"attachment; filename={filename}.srt"
     resp.headers["Content-Type"] = "application/x-subrip"
     resp.headers["Content-Length"] = str(len(data.encode("utf-8")))
