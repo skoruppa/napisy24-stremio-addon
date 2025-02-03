@@ -40,7 +40,8 @@ def addon_stream(content_type: str, content_id: str, params: str):
                         'id': str(sub_id),
                         'url': download_url,
                         'SubEncoding': 'UTF-8',
-                        'lang': 'Napisy24: Polskie'
+                        # 'lang': 'Napisy24: Polskie'
+                        'lang': 'pol'
                     }
                 ]
             }
