@@ -59,7 +59,10 @@ class Napisy24API:
 
         for subtitle in root.findall("subtitle"):
             sub_id = subtitle.find("id").text
-            fps = float(subtitle.find("fps").text.replace(",", "."))
+            try:
+                fps = float(subtitle.find("fps").text.replace(",", "."))
+            except (AttributeError, ValueError):
+                fps = None
             release = subtitle.find("release").text
 
             sub_item = {
