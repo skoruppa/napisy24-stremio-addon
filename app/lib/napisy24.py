@@ -58,7 +58,7 @@ class Napisy24API:
 
         for subtitle in root.findall("subtitle"):
             sub_id = subtitle.find("id").text
-            fps = float(subtitle.find("fps").text)
+            fps = float(subtitle.find("fps").text.replace(",", "."))
             release = subtitle.find("release").text
 
             if filename is None or (release and filename[:-4] in release):
