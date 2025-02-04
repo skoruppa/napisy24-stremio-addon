@@ -25,7 +25,8 @@ class Napisy24API:
         if not response_text.startswith(b"OK-2"):
             return None, None, None, None
 
-        fps = float(re.search(rb"fps:([\d.]+)", response_text).group(1))
+        match = re.search(rb"fps:([\d.]+)", response_text)
+        fps = float(match.group(1)) if match else None
         sub_id = int(re.search(rb"lp:([\d.]+)", response_text).group(1))
         return response_text.decode(), io.BytesIO(response_data), fps, sub_id
 

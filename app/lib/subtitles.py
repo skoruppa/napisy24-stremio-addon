@@ -8,6 +8,9 @@ def extract_and_convert(zip_content, fps):
             if file_name.endswith(('.txt', '.srt', '.sub')):
                 with zip_file.open(file_name) as file:
                     raw_data = file.read()
-                    encoding = 'utf-8' if b'\xef\xbb\xbf' in raw_data[:3] else 'cp1250'
-                    return SSAFile.from_string(raw_data.decode(encoding), fps=fps).to_string("srt")
+                    try:
+                        encoded = test = raw_data.decode('cp1250')
+                    except UnicodeDecodeError:
+                        encoded = test = raw_data.decode('utf-8')
+                    return SSAFile.from_string(encoded, fps=fps).to_string("srt")
     raise Exception("Brak plików z napisami w archiwum ZIP")
