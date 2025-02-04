@@ -1,51 +1,32 @@
 import requests
 import io
 import re
-from app.routes.utils import cache
 import xml.etree.ElementTree as ET
+from app.routes.utils import cache
 
 NAPISY24_API_USER = "subliminal"
 NAPISY24_API_PASSWORD = "lanimilbus"
 
 
 class Napisy24API:
-    """
-    Napisy24 API wrapper
-    """
-    _cache = {}
-    _cache_expiry = 600  # 10 mi
-
-    def __init__(self):
-        """
-        Initialize the Napisy24 API wrapper
-        """
-
     @staticmethod
-    @cache.memoize()
+    @cache.memoize(timeout=600)
     def fetch_subtitles_from_hash(filehash: str, filesize: str, filename: str):
-        url = "http://napisy24.pl/run/CheckSubAgent.php"
-        payload = {
-            'postAction': 'CheckSub',
-            'ua': NAPISY24_API_USER,
-            'ap': NAPISY24_API_PASSWORD,
-            'fh': filehash,
-            'fs': filesize,
-            'n24pref': 1
-        }
-        if filename:
-            payload['fn'] = filename
-        headers = {"User-Agent": "Subliminal", "Content-Type": "application/x-www-form-urlencoded"}
-        response = requests.post(url, data=payload, headers=headers)
-        if response.status_code != 200:
-            raise Exception(f"Błąd: {response.status_code}")
+        response = requests.post("http://napisy24.pl/run/CheckSubAgent.php", data={
+            'postAction': 'CheckSub', 'ua': NAPISY24_API_USER, 'ap': NAPISY24_API_PASSWORD,
+            'fh': filehash, 'fs': filesize, 'n24pref': 1, 'fn': filename or ""
+        }, headers={"User-Agent": "Subliminal"})
 
-        response_content = response.content.split(b'||', 1)
-        response_text = response_content[0].decode()
-        if response_text.startswith("OK-2"):
-            fps = float(re.search(r"fps:([\d.]+)", response_text).group(1))
-            sub_id = float(re.search(r"lp:([\d.]+)", response_text).group(1))
-            return response_text, io.BytesIO(response_content[-1]), fps, sub_id
-        return None, None, None, None
+        if response.status_code != 200:
+            return None, None, None, None
+
+        response_text, response_data = response.content.split(b'||', 1)
+        if not response_text.startswith(b"OK-2"):
+            return None, None, None, None
+
+        fps = float(re.search(rb"fps:([\d.]+)", response_text).group(1))
+        sub_id = int(re.search(rb"lp:([\d.]+)", response_text).group(1))
+        return response_text.decode(), io.BytesIO(response_data), fps, sub_id
 
     @staticmethod
     def fetch_subtitles_from_imdb_id(imdbId, filename=None):
