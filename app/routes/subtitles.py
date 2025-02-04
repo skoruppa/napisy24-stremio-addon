@@ -1,6 +1,6 @@
 import base64
 import json
-from flask import Blueprint, url_for, Response, make_response
+from flask import Blueprint, url_for, Response, make_response, request
 from urllib.parse import parse_qs, unquote
 
 from app.routes import napisy24_client
@@ -11,8 +11,12 @@ subtitles_bp = Blueprint('subtitles', __name__)
 
 
 @subtitles_bp.route('/subtitles/<content_type>/<content_id>/<params>.json')
+@subtitles_bp.route('/subtitles/<content_type>/<content_id>/<path:params>')
 def addon_stream(content_type: str, content_id: str, params: str):
     content_id = unquote(content_id)
+    handling_error_file = request.query_string.decode()
+    if handling_error_file:
+        params = handling_error_file
     parsed_params = {k: v[0] for k, v in parse_qs(params).items() if v}
 
     if all(key in parsed_params for key in ("videoSize", "videoHash")):
