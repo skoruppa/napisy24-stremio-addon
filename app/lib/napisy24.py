@@ -1,3 +1,4 @@
+from lxml import etree
 import requests
 import io
 import re
@@ -52,7 +53,8 @@ class Napisy24API:
         response_text = f"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<subtitles>{response_text}</subtitles>"
 
         # Parsowanie XML
-        root = ET.fromstring(response_text)
+        parser = etree.XMLParser(recover=True, encoding='utf-8')
+        root = ET.fromstring(response_text, parser=parser, )
 
         for subtitle in root.findall("subtitle"):
             sub_id = subtitle.find("id").text
