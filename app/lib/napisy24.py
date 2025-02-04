@@ -62,12 +62,16 @@ class Napisy24API:
             fps = float(subtitle.find("fps").text.replace(",", "."))
             release = subtitle.find("release").text
 
-            if filename is None or (release and filename[:-4] in release):
-                subtitles.append({
+            sub_item = {
                     'id': sub_id,
                     'fps': fps,
                     'release': release
-                })
+                }
+
+            if filename and release in filename[:-4]:
+                return [sub_item]
+
+            subtitles.append(sub_item)
 
         return subtitles
 
