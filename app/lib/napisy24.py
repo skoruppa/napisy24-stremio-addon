@@ -100,7 +100,7 @@ class Napisy24API:
                 fps = None
             release = subtitle.find("release").text
             title = subtitle.find("title").text
-            altTitle = subtitle.find("altTitle").text
+            altTitle = subtitle.find("altTitle").text or ''
 
             sub_item = {
                     'id': sub_id,
