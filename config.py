@@ -12,6 +12,7 @@ class Config:
     FLASK_PORT = os.getenv('FLASK_RUN_PORT', "5000")
     CACHE_TYPE = 'SimpleCache'
     CACHE_DEFAULT_TIMEOUT = 600
+    TMDB_KEY = os.getenv('TMDB_KEY', "")
 
     DEBUG = os.getenv('FLASK_DEBUG', False)
 

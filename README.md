@@ -4,7 +4,7 @@ This addon will provide subtitles for movies & series from portal [Napisy24.pl](
 
 It is based on Napisy24 "_API documentation_" from those two forum posts: [\[1\]](https://forum.napisy24.pl/viewtopic.php?f=9&t=142) [\[2\]](https://forum.napisy24.pl/viewtopic.php?f=26&t=226)
 
-The addon is far from perfect and has its flaws. Napisy24 uses OSDB hashes just like Stremio. If searching by hash brings no results, it will try to search with IMDB id. But that will work only for movies because Napisy24 uses an unique IMDB id of each episode instead of _seriesImdbId:season:episode_ format from Stremio.
+The addon is far from perfect and has its flaws. Napisy24 uses OSDB hashes just like Stremio. If searching by hash brings no results, it will try to search with IMDB id.
 
 When searching by IMDB id, subtitles will have **Napisy24** prefix and **release info** as name. You will need to always select them manually 
 

@@ -3,10 +3,16 @@ import requests
 import io
 import re
 import xml.etree.ElementTree as ET
+from themoviedb import TMDb
 from app.routes.utils import cache
+from config import Config
 
+
+TMDB_KEY = Config.TMDB_KEY
 NAPISY24_API_USER = "subliminal"
 NAPISY24_API_PASSWORD = "lanimilbus"
+
+tmdb = TMDb(key=TMDB_KEY, language="pl-PL", region="PL")
 
 
 class Napisy24API:
@@ -34,7 +40,15 @@ class Napisy24API:
     def fetch_subtitles_from_imdb_id(imdbId, filename=None):
         parts = imdbId.split(':')
         if len(parts) > 1:
-            return []  # Napis24 uses individual episodes imdb id that I can't easily map
+            new_id = parts[0]
+            tmdb_id = tmdb.find().by_imdb(new_id).tv_results[0].id
+            if len(parts) == 3:
+                season = int(parts[1])
+                episode = int(parts[2])
+            else:
+                episode = int(parts[1])
+                season = 1
+            imdbId = tmdb.episode(tmdb_id, season, episode).external_ids().imdb_id
 
         url = f"http://napisy24.pl/libs/webapi.php?imdb={imdbId}"
         response = requests.get(url)
