@@ -39,8 +39,8 @@ class Napisy24API:
     @staticmethod
     def fetch_subtitles_from_imdb_id(imdbId, filename=None):
         parts = imdbId.split(':')
-        season = None
-        episode = None
+        season = ''
+        episode = ''
         search_string = None
         if len(parts) > 1:
             new_id = parts[0]
