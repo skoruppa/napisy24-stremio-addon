@@ -44,7 +44,10 @@ class Napisy24API:
         search_string = None
         if len(parts) > 1:
             new_id = parts[0]
-            tmdb_data = tmdb.find().by_imdb(new_id).tv_results[0]
+            try:
+                tmdb_data = tmdb.find().by_imdb(new_id).tv_results[0]
+            except IndexError:
+                return []
             tmdb_id = tmdb_data.id
             if len(parts) == 3:
                 season = int(parts[1])
@@ -61,7 +64,10 @@ class Napisy24API:
             episode_string = f' {season}x{episode:02}'
             if not episode:
                 episode_string = ''
-                tmdb_data = tmdb.find().by_imdb(imdbId).movie_results[0]
+                try:
+                    tmdb_data = tmdb.find().by_imdb(imdbId).movie_results[0]
+                except IndexError:
+                    return []
                 name = tmdb_data.title
             else:
                 name = tmdb_data.name
