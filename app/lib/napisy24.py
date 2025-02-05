@@ -61,7 +61,9 @@ class Napisy24API:
             if not episode:
                 episode_string = ''
                 tmdb_data = tmdb.find().by_imdb(imdbId).movie_results[0]
-            name = tmdb_data.name
+                name = tmdb_data.title
+            else:
+                name = tmdb_data.name
             url = f"https://napisy24.pl/libs/webapi.php?title={name}{episode_string}"
             response = requests.get(url)
             if response.status_code != 200 or response.text == 'brak wynikow':
