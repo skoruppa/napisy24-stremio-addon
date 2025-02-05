@@ -56,7 +56,7 @@ class Napisy24API:
         url = f"http://napisy24.pl/libs/webapi.php?imdb={imdbId}"
         response = requests.get(url)
 
-        if response.status_code != 200 or response.text == 'brak wynikow':
+        if response.status_code != 200 or response.text == 'brak wynikow' or episode:
             try:
                 if episode:
                     tmdb_data = tmdb.find().by_imdb(imdbId).tv_results[0]
@@ -116,9 +116,10 @@ class Napisy24API:
             if search_string:
                 if search_string.lower() == title.lower() or search_string.lower() == altTitle.lower():
                     subtitles.append(sub_item)
-            elif episode and subSeason:
-                if int(subSeason) == season and int(subEpisode) == episode:
-                    subtitles.append(sub_item)
+            elif episode:
+                if subSeason:
+                    if int(subSeason) == season and int(subEpisode) == episode:
+                        subtitles.append(sub_item)
             else:
                 subtitles.append(sub_item)
 
