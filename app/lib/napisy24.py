@@ -66,7 +66,7 @@ class Napisy24API:
                     tmdb_data = tmdb.find().by_imdb(imdbId).movie_results[0]
                     episode_string = ''
                     name = tmdb_data.title
-            except IndexError:
+            except (IndexError, ValueError):
                 return []
 
             search_string = f'{name}{episode_string}'
