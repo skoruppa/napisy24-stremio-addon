@@ -39,9 +39,12 @@ class Napisy24API:
     @staticmethod
     def fetch_subtitles_from_imdb_id(imdbId, filename=None):
         parts = imdbId.split(':')
+        season = None
+        episode = None
         if len(parts) > 1:
             new_id = parts[0]
-            tmdb_id = tmdb.find().by_imdb(new_id).tv_results[0].id
+            tmdb_data = tmdb.find().by_imdb(new_id).tv_results[0]
+            tmdb_id = tmdb_data.id
             if len(parts) == 3:
                 season = int(parts[1])
                 episode = int(parts[2])
@@ -54,7 +57,15 @@ class Napisy24API:
         response = requests.get(url)
 
         if response.status_code != 200 or response.text == 'brak wynikow':
-            return []
+            episode_string = f' {season}x{episode}'
+            if not episode:
+                episode_string = ''
+                tmdb_data = tmdb.find().by_imdb(imdbId).movie_results[0]
+            name = tmdb_data.name
+            url = f"https://napisy24.pl/libs/webapi.php?title={name}{episode_string}"
+            response = requests.get(url)
+            if response.status_code != 200 or response.text == 'brak wynikow':
+                return []
 
         subtitles = []
         response_text = response.text.strip()
