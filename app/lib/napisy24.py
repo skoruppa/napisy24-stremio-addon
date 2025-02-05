@@ -38,6 +38,8 @@ class Napisy24API:
 
     @staticmethod
     def fetch_subtitles_from_imdb_id(imdbId, filename=None):
+        if not imdbId.startswith("tt"):
+            return []
         parts = imdbId.split(':')
         season = ''
         episode = ''
@@ -97,8 +99,10 @@ class Napisy24API:
             release = subtitle.find("release").text
             title = subtitle.find("title").text
             altTitle = subtitle.find("altTitle").text or ''
-            subSeason = subtitle.find("season").text or ''
-            subEpisode = subtitle.find("episode").text or ''
+            subSeason = subtitle.find("season")
+            subSeason = subSeason.text if subSeason is not None else ''
+            subEpisode = subtitle.find("episode")
+            subEpisode = subEpisode.text if subEpisode is not None else ''
 
             sub_item = {
                     'id': sub_id,
