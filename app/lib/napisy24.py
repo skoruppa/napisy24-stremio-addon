@@ -41,6 +41,7 @@ class Napisy24API:
         parts = imdbId.split(':')
         season = None
         episode = None
+        search_string = None
         if len(parts) > 1:
             new_id = parts[0]
             tmdb_data = tmdb.find().by_imdb(new_id).tv_results[0]
@@ -57,14 +58,15 @@ class Napisy24API:
         response = requests.get(url)
 
         if response.status_code != 200 or response.text == 'brak wynikow':
-            episode_string = f' {season}x{episode}'
+            episode_string = f' {season}x{episode:02}'
             if not episode:
                 episode_string = ''
                 tmdb_data = tmdb.find().by_imdb(imdbId).movie_results[0]
                 name = tmdb_data.title
             else:
                 name = tmdb_data.name
-            url = f"https://napisy24.pl/libs/webapi.php?title={name}{episode_string}"
+            search_string = f'{name}{episode_string}'
+            url = f"https://napisy24.pl/libs/webapi.php?title={search_string}"
             response = requests.get(url)
             if response.status_code != 200 or response.text == 'brak wynikow':
                 return []
@@ -91,6 +93,8 @@ class Napisy24API:
             except (AttributeError, ValueError):
                 fps = None
             release = subtitle.find("release").text
+            title = subtitle.find("title").text
+            altTitle = subtitle.find("altTitle").text
 
             sub_item = {
                     'id': sub_id,
@@ -101,7 +105,11 @@ class Napisy24API:
             if filename and release in filename[:-4]:
                 return [sub_item]
 
-            subtitles.append(sub_item)
+            if search_string:
+                if search_string.lower() == title.lower() or search_string.lower() == altTitle.lower():
+                    subtitles.append(sub_item)
+            else:
+                subtitles.append(sub_item)
 
         return subtitles
 
