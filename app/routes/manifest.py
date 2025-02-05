@@ -5,7 +5,7 @@ manifest_blueprint = Blueprint('manifest', __name__)
 
 MANIFEST = {
     'id': 'com.skoruppa.napisy24-stremio-addon',
-    'version': '0.0.1',
+    'version': '0.0.2',
     'name': 'Napisy24 Addon',
     'logo': 'https://napisy24.pl/templates/st_magazine/favicon.ico',
     'description': 'Addon for getting subtitles from Napisy24.pl',
