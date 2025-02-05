@@ -116,7 +116,7 @@ class Napisy24API:
             if search_string:
                 if search_string.lower() == title.lower() or search_string.lower() == altTitle.lower():
                     subtitles.append(sub_item)
-            elif episode:
+            elif episode and subSeason:
                 if int(subSeason) == season and int(subEpisode) == episode:
                     subtitles.append(sub_item)
             else:
