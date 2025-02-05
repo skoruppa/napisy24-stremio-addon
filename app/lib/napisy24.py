@@ -43,34 +43,30 @@ class Napisy24API:
         episode = ''
         search_string = None
         if len(parts) > 1:
-            new_id = parts[0]
-            try:
-                tmdb_data = tmdb.find().by_imdb(new_id).tv_results[0]
-            except IndexError:
-                return []
-            tmdb_id = tmdb_data.id
+            imdbId = parts[0]
             if len(parts) == 3:
                 season = int(parts[1])
                 episode = int(parts[2])
             else:
                 episode = int(parts[1])
                 season = 1
-            imdbId = tmdb.episode(tmdb_id, season, episode).external_ids().imdb_id
 
         url = f"http://napisy24.pl/libs/webapi.php?imdb={imdbId}"
         response = requests.get(url)
 
         if response.status_code != 200 or response.text == 'brak wynikow':
-            episode_string = f' {season}x{episode:02}'
-            if not episode:
-                episode_string = ''
-                try:
+            try:
+                if episode:
+                    tmdb_data = tmdb.find().by_imdb(imdbId).tv_results[0]
+                    episode_string = f' {season}x{episode:02}'
+                    name = tmdb_data.name
+                else:
                     tmdb_data = tmdb.find().by_imdb(imdbId).movie_results[0]
-                except IndexError:
-                    return []
-                name = tmdb_data.title
-            else:
-                name = tmdb_data.name
+                    episode_string = ''
+                    name = tmdb_data.title
+            except IndexError:
+                return []
+
             search_string = f'{name}{episode_string}'
             url = f"https://napisy24.pl/libs/webapi.php?title={search_string}"
             response = requests.get(url)
@@ -101,6 +97,8 @@ class Napisy24API:
             release = subtitle.find("release").text
             title = subtitle.find("title").text
             altTitle = subtitle.find("altTitle").text or ''
+            subSeason = subtitle.find("season").text or ''
+            subEpisode = subtitle.find("episode").text or ''
 
             sub_item = {
                     'id': sub_id,
@@ -113,6 +111,9 @@ class Napisy24API:
 
             if search_string:
                 if search_string.lower() == title.lower() or search_string.lower() == altTitle.lower():
+                    subtitles.append(sub_item)
+            elif episode:
+                if int(subSeason) == season and int(subEpisode) == episode:
                     subtitles.append(sub_item)
             else:
                 subtitles.append(sub_item)
