@@ -89,6 +89,7 @@ class Napisy24API:
 
         # Dodaj poprawny root
         response_text = f"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<subtitles>{response_text}</subtitles>"
+        response_text = response_text.replace('<br>', '')
 
         # Parsowanie XML
         parser = etree.XMLParser(recover=True, encoding='utf-8')
