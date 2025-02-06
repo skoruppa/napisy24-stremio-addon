@@ -27,7 +27,11 @@ class Napisy24API:
         if response.status_code != 200:
             return None, None, None, None
 
-        response_text, response_data = response.content.split(b'||', 1)
+        try:
+            response_text, response_data = response.content.split(b'||', 1)
+        except ValueError:
+            print(f'unknown error: {response.content}')
+            return None, None, None, None
         if not response_text.startswith(b"OK-2"):
             return None, None, None, None
 
