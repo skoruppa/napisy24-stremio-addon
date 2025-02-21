@@ -12,7 +12,7 @@ When searching by IMDB id, subtitles will have **Napisy24** prefix and **release
 
 To install the addon:
 
-1. Visit [The Addon Website](https://napisy24-stremio-addon.leapcell.app/) 
+1. Visit [The Addon Website](https://napisy24-stremio.top/) 
 2. Copy the manifest URL.
 4. Open Stremio and go to the addon search box.
 5. Paste the copied manifest URL into the addon search box and press Enter. Alternatively, you can click "Open In Stremio" to automatically add the addon to Stremio.
