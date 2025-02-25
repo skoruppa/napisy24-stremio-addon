@@ -115,7 +115,7 @@ class Napisy24API:
                     'release': release
                 }
 
-            if filename and release in filename[:-4]:
+            if filename and release and release in filename[:-4]:
                 return [sub_item]
 
             if search_string:

@@ -8,7 +8,7 @@ MANIFEST = {
     'version': '0.0.3',
     'name': 'Napisy24 Addon',
     'logo': 'https://napisy24.pl/templates/st_magazine/favicon.ico',
-    'description': 'Addon for getting subtitles from Napisy24.pl',
+    'description': 'Addon for getting polish subtitles from Napisy24.pl',
     'types': ['movie', 'series'],
     'catalogs': [],
     'contactEmail': 'skoruppa@gmail.com',
