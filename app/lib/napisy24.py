@@ -101,7 +101,10 @@ class Napisy24API:
                 fps = float(subtitle.find("fps").text.replace(",", "."))
             except (AttributeError, ValueError):
                 fps = None
-            release = subtitle.find("release").text
+            if subtitle.find("release"):
+                release = subtitle.find("release").text
+            else:
+                release = 'unknown'
             title = subtitle.find("title").text
             altTitle = subtitle.find("altTitle").text or ''
             subSeason = subtitle.find("season")
