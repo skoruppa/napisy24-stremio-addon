@@ -13,7 +13,11 @@ MANIFEST = {
     'catalogs': [],
     'contactEmail': 'skoruppa@gmail.com',
     'behaviorHints': {'configurable': False},
-    'resources': ['subtitles']
+    'resources': ['subtitles'],
+    'stremioAddonsConfig': {
+        'issuer': 'https://stremio-addons.net',
+        'signature': 'eyJhbGciOiJkaXIiLCJlbmMiOiJBMTI4Q0JDLUhTMjU2In0..KjXNLdeZoDuNu5tcszX3Vg.dQrcQ7znHPiHQT7LyiOG-rsO0qRWItcIMZ33T71RnV-Ba5kQmDvyFL1jF9oHYKPvRjMIlXDbeUzVpadOtGKr87IWL_dkRNEpEXf0YK25JBE.zveN6jTFWtGa52zoTXtdNg'
+    }
 }
 
 
