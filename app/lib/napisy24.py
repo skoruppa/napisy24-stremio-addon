@@ -102,13 +102,15 @@ class Napisy24API:
         root = ET.fromstring(response_text, parser=parser, )
 
         for subtitle in root.findall("subtitle"):
+            test = etree.tostring(subtitle, pretty_print=True, encoding='unicode')
             sub_id = subtitle.find("id").text
             try:
                 fps = float(subtitle.find("fps").text.replace(",", "."))
             except (AttributeError, ValueError):
                 fps = None
-            if subtitle.find("release"):
-                release = subtitle.find("release").text
+            release_el = subtitle.find("release")
+            if release_el is not None:
+                release = release_el.text
             else:
                 release = 'unknown'
             title = subtitle.find("title").text
