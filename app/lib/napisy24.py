@@ -66,10 +66,12 @@ class Napisy24API:
                     tmdb_data = tmdb.find().by_imdb(imdbId).tv_results[0]
                     episode_string = f' {season}x{episode:02}'
                     name = tmdb_data.name
+                    original_name = tmdb_data.original_name
                 else:
                     tmdb_data = tmdb.find().by_imdb(imdbId).movie_results[0]
                     episode_string = ''
                     name = tmdb_data.title
+                    original_name = tmdb_data.original_title
             except (IndexError, ValueError):
                 return []
 
@@ -77,7 +79,11 @@ class Napisy24API:
             url = f"https://napisy24.pl/libs/webapi.php?title={search_string}"
             response = requests.get(url)
             if response.status_code != 200 or response.text == 'brak wynikow':
-                return []
+                search_string = f'{original_name}{episode_string}'
+                url = f"https://napisy24.pl/libs/webapi.php?title={search_string}"
+                response = requests.get(url)
+                if response.status_code != 200 or response.text == 'brak wynikow':
+                    return []
 
         subtitles = []
         response_text = response.text.strip()
