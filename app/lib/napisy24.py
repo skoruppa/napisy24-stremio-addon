@@ -143,7 +143,7 @@ class Napisy24API:
 
     @staticmethod
     def download_subtitle_id(subtitle_id: str):
-        url = f"http://napisy24.pl/run/pages/download.php?napisId={subtitle_id}"
+        url = f"http://napisy24.pl/run/pages/download.php?napisId={subtitle_id}&typ=sr"
         headers = {"Referer": "http://napisy24.pl/"}
         response = requests.get(url, headers=headers)
 
