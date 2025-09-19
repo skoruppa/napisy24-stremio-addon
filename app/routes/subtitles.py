@@ -1,6 +1,6 @@
 import base64
 import json
-from flask import Blueprint, url_for, Response, make_response, request
+from flask import Blueprint, url_for, Response, make_response, request, current_app
 from urllib.parse import parse_qs, unquote
 
 from app.routes import napisy24_client
@@ -35,7 +35,7 @@ def addon_stream(content_type: str, content_id: str, params: str):
         subtitles = {'subtitles': []}
         for subtitle in napisy24_client.fetch_subtitles_from_imdb_id(content_id, parsed_params.get("filename")):
             encoded_params = base64.urlsafe_b64encode(json.dumps(subtitle).encode()).decode()
-            download_url = url_for('subtitles.download_subtitles_from_id', params=encoded_params, _external=True)
+            download_url = url_for('subtitles.download_subtitles_from_id', params=encoded_params, _external=True, _scheme=current_app.config['PROTOCOL'])
             subtitles['subtitles'].append({'id': str(subtitle['id']), 'url': download_url, 'SubEncoding': 'UTF-8',
                                            'lang': f'Napisy24: {subtitle["release"]}'})
         return respond_with(subtitles)
