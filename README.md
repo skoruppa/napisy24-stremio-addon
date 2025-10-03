@@ -1,5 +1,10 @@
 # Napisy24 Stremio Addon
 
+![Version](https://img.shields.io/badge/version-0.0.4-blue.svg)
+![License](https://img.shields.io/badge/license-MIT-green.svg)
+![Status](https://img.shields.io/badge/status-Active-brightgreen.svg)
+
+
 This addon will provide subtitles for movies & series from portal [Napisy24.pl](http://napisy24.pl) in Polish language
 
 It is based on Napisy24 "_API documentation_" from those two forum posts: [\[1\]](https://forum.napisy24.pl/viewtopic.php?f=9&t=142) [\[2\]](https://forum.napisy24.pl/viewtopic.php?f=26&t=226)
