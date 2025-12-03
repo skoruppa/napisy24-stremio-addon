@@ -1,25 +1,18 @@
-function copy_to_clipboard() {
-    /* Get the text field */
-    let copyText = document.getElementById("manifest_url");
-
-    /* Select the text field */
-    copyText.setSelectionRange(0, copyText.value.length); /* For mobile devices */
-
-    /* Copy the text inside the text field */
-    try {
-        navigator.clipboard.writeText(copyText.value).then(() => alert("Copied Manifest URL to clipboard"));
-    } catch (Exception) {
-        try {
-            // noinspection JSDeprecatedSymbols
-            document.execCommand('copy')
-        } catch (Exception) {
-            alert("Failed to copy to clipboard");
-        }
+function copy_to_clipboard(event) {
+    const copyText = document.getElementById("manifest_url");
+    
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(copyText.value)
+            .then(() => {
+                const btn = event.target.closest('button');
+                const originalHTML = btn.innerHTML;
+                btn.innerHTML = '<i class="bi bi-check"></i>';
+                setTimeout(() => btn.innerHTML = originalHTML, 2000);
+            })
+            .catch(() => alert("Failed to copy"));
+    } else {
+        copyText.select();
+        copyText.setSelectionRange(0, 99999);
+        document.execCommand('copy');
     }
-}
-
-function toast() {
-    /* Get the snackbar DIV */
-    let x = document.getElementById("toast");
-    x.show();
 }

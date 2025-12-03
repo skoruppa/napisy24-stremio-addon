@@ -1,37 +1,43 @@
 {% extends 'base.html' %}
 
-{% block title %}
-    Napisy24.pl Stremio Addon
-{% endblock %}
+{% block title %}Napisy24.pl Stremio Addon{% endblock %}
 
-{% block header %}
-    Napisy24.pl Stremio Addon
-{% endblock %}
-
-{% with messages = get_flashed_messages() %}
-    {% if messages %}
-        <div class=flashes>
-            {% for message in messages %}
-                <h2>{{ message }}</h2>
-            {% endfor %}
-        </div>
-    {% endif %}
-{% endwith %}
+{% block header %}Napisy24.pl Stremio Addon{% endblock %}
 
 {% block content %}
-    <div class="card border-0 text-center bg-dark text-white">
-            <label for="manifest_url">
-                <input id="manifest_url" class="bg-dark text-warning form-control" type="text"
-                       value="{{ manifest_url }}" readonly>
-            </label>
-            <div class="d-col pt-3">
-                <button class="btn btn-primary mr-2" onclick="copy_to_clipboard()">
-                    Copy Manifest URL
-                </button>
-
-                <button class="btn btn-primary ml-2" onclick="location.href='{{ manifest_magnet }}'">
-                    Open In Stremio
-                </button>
+<div class="row justify-content-center">
+    <div class="col-12 col-md-10 col-lg-8">
+        <div class="card bg-secondary border-0 shadow-lg">
+            <div class="card-body p-4 p-md-5">
+                <p class="text-center text-white-50 mb-4">Polish subtitles for Stremio from Napisy24.pl</p>
+                
+                <div class="mb-4">
+                    <label for="manifest_url" class="form-label text-white-50 small">Manifest URL</label>
+                    <div class="input-group">
+                        <input id="manifest_url" class="form-control bg-dark text-warning border-0" type="text" value="{{ manifest_url }}" readonly>
+                        <button class="btn btn-outline-warning" onclick="copy_to_clipboard(event)" title="Copy">
+                            <i class="bi bi-clipboard"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                    <button class="btn btn-primary btn-lg px-4" onclick="copy_to_clipboard(event)">
+                        <i class="bi bi-clipboard me-2"></i>Copy URL
+                    </button>
+                    <button class="btn btn-success btn-lg px-4" onclick="location.href='{{ manifest_magnet }}'">
+                        <i class="bi bi-download me-2"></i>Install in Stremio
+                    </button>
+                </div>
             </div>
+        </div>
+        
+        <div class="mt-4 text-center text-white-50">
+            <small>
+                <i class="bi bi-info-circle me-1"></i>
+                Copy URL and paste in Stremio addon settings or click "Install in Stremio"
+            </small>
+        </div>
     </div>
+</div>
 {% endblock %}

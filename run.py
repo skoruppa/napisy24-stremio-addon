@@ -50,5 +50,10 @@ def callback():
 if __name__ == '__main__':
     from waitress import serve
 
-    serve(app, host='0.0.0.0', port=5000)
+    serve(app, host='0.0.0.0', port=5000, 
+          threads=Config.THREADS, 
+          channel_timeout=30,
+          connection_limit=1000,
+          cleanup_interval=10,
+          asyncore_use_poll=True)
 
