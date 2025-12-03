@@ -10,9 +10,27 @@
         body { min-height: 100vh; display: flex; flex-direction: column; }
         .content { flex: 1; }
         footer { margin-top: auto; }
+        
+        @media (prefers-color-scheme: dark) {
+            body { background-color: #212529; color: #fff; }
+            .card { background-color: #6c757d !important; }
+            .form-control { background-color: #343a40 !important; color: #ffc107 !important; }
+            footer { background-color: #000 !important; color: rgba(255,255,255,0.5) !important; }
+            .text-white-50 { color: rgba(255,255,255,0.5) !important; }
+        }
+        
+        @media (prefers-color-scheme: light) {
+            body { background-color: #f8f9fa; color: #212529; }
+            .card { background-color: #fff !important; box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15) !important; }
+            .form-control { background-color: #e9ecef !important; color: #856404 !important; border: 1px solid #dee2e6 !important; }
+            footer { background-color: #e9ecef !important; color: #6c757d !important; }
+            .text-white-50 { color: #6c757d !important; }
+            .btn-outline-warning { color: #856404; border-color: #856404; }
+            .btn-outline-warning:hover { background-color: #856404; color: #fff; }
+        }
     </style>
 </head>
-<body class="bg-dark text-white">
+<body>
     <div class="content">
         <div class="container py-5">
             <header class="text-center mb-5">
