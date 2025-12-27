@@ -38,9 +38,22 @@ def addon_stream(content_type: str, content_id: str, params: str):
                 subtitles = {'subtitles': []}
                 for subtitle in napisy24_client.fetch_subtitles_from_imdb_id(content_id, parsed_params.get("filename")):
                     encoded_params = base64.urlsafe_b64encode(json.dumps(subtitle).encode()).decode()
-                    download_url = url_for('subtitles.download_subtitles_from_id', params=encoded_params, _external=True, _scheme=current_app.config['PROTOCOL'])
-                    subtitles['subtitles'].append({'id': str(subtitle['id']), 'url': download_url, 'SubEncoding': 'UTF-8',
-                                                   'lang': f'Napisy24: {subtitle["release"]}'})
+                    download_url = url_for(
+                        'subtitles.download_subtitles_from_id',
+                        params=encoded_params,
+                        _external=True,
+                        _scheme=current_app.config['PROTOCOL']
+                    )
+
+                    release_safe = subtitle["release"].replace(" ", "_")
+
+                    subtitles['subtitles'].append({
+                        'id': f'{subtitle["id"]}_{release_safe}',
+                        'url': download_url,
+                        'SubEncoding': 'UTF-8',
+                        'lang': 'pol'
+                    })
+
                 return respond_with(subtitles)
     except Exception as e:
         current_app.logger.error(f"Error in addon_stream: {str(e)}")
